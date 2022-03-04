@@ -15,11 +15,61 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_repos"
+    <LinearLayout
+        android:id="@+id/llSearch"
+        app:layout_constraintTop_toBottomOf="@id/toolBarMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/toolBarMain"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ilSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="15dp"
+            android:layout_marginVertical="10dp"
+            android:orientation="vertical"
+            android:textColorHint="@color/blue_5"
+            app:boxStrokeColor="@color/blue_4"
+            app:hintTextColor="@color/blue_4"
+            style="@style/TextInputLayoutTheme"
+            >
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Repository Name"
+                android:textColor="@color/blue_5"
+                android:textColorHighlight="@color/blue_2"
+                android:textCursorDrawable="@null"
+                style="@style/EditTextTheme"
+                />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/ibSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="7dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_search_blue_24"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/white"
+            />
+
+    </LinearLayout>
+
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRepos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/llSearch"
         />
 
     <TextView
