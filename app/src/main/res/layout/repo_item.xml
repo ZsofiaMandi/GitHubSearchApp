@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Here will come the long or short name, let's"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/blue_5"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="5dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Here will come a long or short text for describing the repo, check if"
+        android:textSize="15sp"
+        android:paddingHorizontal="8dp"
+        android:paddingBottom="5dp"
+        app:layout_constraintTop_toBottomOf="@id/tvName"
+        />
+
+    <ImageView
+        android:id="@+id/ivStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_star_border_blue_24"
+        android:padding="5dp"
+        android:contentDescription="@string/iv_star_description"
+        app:layout_constraintTop_toBottomOf="@id/tvDescription"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/double_dot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/double_dot_between_star_and_number"
+        android:textStyle="bold"
+        android:textColor="@color/blue_5"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="@id/ivStar"
+        app:layout_constraintBottom_toBottomOf="@id/ivStar"
+        app:layout_constraintStart_toEndOf="@id/ivStar"
+        />
+
+    <TextView
+        android:id="@+id/tvStars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="23"
+        android:textStyle="bold"
+        android:textColor="@color/blue_5"
+        android:textSize="18sp"
+        android:padding="5dp"
+        app:layout_constraintTop_toTopOf="@id/ivStar"
+        app:layout_constraintBottom_toBottomOf="@id/ivStar"
+        app:layout_constraintStart_toEndOf="@id/double_dot"
+        />
+
+    <TextView
+        android:id="@+id/tvLastUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="17 h"
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="20dp"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/ivStar"
+        app:layout_constraintBottom_toBottomOf="@id/ivStar"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

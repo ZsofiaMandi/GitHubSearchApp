@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GitHubRepoSearchApp</string>
+    <string name="repo_search_edit_text_hint">Repository Name</string>
+    <string name="ib_search_description">Start search button</string>
+    <string name="double_dot_between_star_and_number">:</string>
+    <string name="iv_star_description">Star</string>
 </resources>

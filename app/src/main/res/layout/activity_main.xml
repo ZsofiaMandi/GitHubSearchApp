@@ -39,7 +39,7 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Repository Name"
+                android:hint="@string/repo_search_edit_text_hint"
                 android:textColor="@color/blue_5"
                 android:textColorHighlight="@color/blue_2"
                 android:textCursorDrawable="@null"
@@ -58,17 +58,17 @@
             android:src="@drawable/ic_search_blue_24"
             android:layout_gravity="center"
             android:backgroundTint="@color/white"
-            />
+            android:contentDescription="@string/ib_search_description" />
 
     </LinearLayout>
-
-
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRepos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/repo_item"
         app:layout_constraintTop_toBottomOf="@id/llSearch"
         />
 
