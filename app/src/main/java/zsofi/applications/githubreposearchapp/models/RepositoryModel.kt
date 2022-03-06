@@ -1,6 +1,6 @@
-package zsofi.applications.githubreposearchapp.classes
+package zsofi.applications.githubreposearchapp.models
 
-data class Repository(
+data class RepositoryModel(
     val id: Int,
     val name: String,
     val description: String,
