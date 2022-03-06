@@ -1,5 +1,6 @@
 package zsofi.applications.githubreposearchapp.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -19,15 +20,17 @@ import zsofi.applications.githubreposearchapp.models.RepositoryModel
 class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
-    private val httpClient: HttpClient = HttpClient(CIO) {
-        install(JsonFeature)
-    }
+    private var httpClient: HttpClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+
+        httpClient = HttpClient(CIO) {
+            install(JsonFeature)
+        }
 
         // Setting up the Action bar
         setSupportActionBar(binding?.toolBarMain)
@@ -52,6 +55,10 @@ class MainActivity : AppCompatActivity() {
         if (binding != null) {
             binding = null
         }
+
+        if (httpClient != null){
+            httpClient = null
+        }
     }
 
     private fun setupReposRecyclerView(repositoryList: ArrayList<RepositoryModel>){
@@ -60,20 +67,23 @@ class MainActivity : AppCompatActivity() {
 
         val reposAdapter = RepositoryAdapter(repositoryList)
         binding?.rvRepos?.adapter = reposAdapter
+
+        reposAdapter.setOnClickListener(object : RepositoryAdapter.OnClickListener{
+            override fun onClick(position: Int, model: RepositoryModel){
+                val intent = Intent(this@MainActivity, DetailedRepositoryActivity::class.java)
+                startActivity(intent)
+            }
+        })
+
     }
 
     private suspend fun getRepositories() : ArrayList<RepositoryModel> {
         val repositoryModelList : ArrayList<RepositoryModel> = ArrayList()
         val res =
-            httpClient.get<JsonObject>("https://api.github.com/search/repositories") {
+            httpClient?.get<JsonObject>("https://api.github.com/search/repositories") {
                 parameter("q", "tetris+language:assembly&sort=stars&order=desc")
             }
-        val items = res["items"]?.jsonArray ?: error("Unexpected input for items")
-        val firstItem = items[0]
-        val firstItemName = firstItem.jsonObject["name"]
-        println("FIRST ITEM: $firstItem")
-        println("FIRST NAME: $firstItemName")
-
+        val items = res?.get("items")?.jsonArray ?: error("Unexpected input for items")
 
         for(i in 0 until items.size){
             val id = i

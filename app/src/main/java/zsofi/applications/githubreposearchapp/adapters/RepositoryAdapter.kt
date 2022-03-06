@@ -58,13 +58,18 @@ class RepositoryAdapter(private val repositoryList: ArrayList<RepositoryModel>)
         }
     }
 
+    // Creating OnClickListener function to call when there is a click on one of the items
+    fun setOnClickListener(onCLickListener: OnClickListener){
+        this.onClickListener = onCLickListener
+    }
+
     // Counting and returning the size of the Repo list
     override fun getItemCount(): Int {
         return repositoryList.size
     }
 
     // Creating OnClickListener function to call when there is a click on one of the items
-    // It will be overwritten in the MainActivity
+    // onClick function will be overwritten in the MainActivity
     interface OnClickListener{
         fun onClick(position: Int, model: RepositoryModel)
     }
