@@ -36,7 +36,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_star_border_blue_24"
-        android:padding="5dp"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="5dp"
         android:contentDescription="@string/iv_star_description"
         app:layout_constraintTop_toBottomOf="@id/tvDescription"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -45,7 +46,7 @@
         android:id="@+id/double_dot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/double_dot_between_star_and_number"
+        android:text="@string/double_dot"
         android:textStyle="bold"
         android:textColor="@color/blue_5"
         android:textSize="18sp"
@@ -69,16 +70,26 @@
         />
 
     <TextView
+        android:id="@+id/tvLastUpdateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last update"
+        android:paddingHorizontal="15dp"
+        app:layout_constraintTop_toTopOf="@id/tvStars"
+        app:layout_constraintEnd_toEndOf="@id/tvLastUpdate"
+        app:layout_constraintBottom_toTopOf="@id/tvLastUpdate"
+        />
+
+    <TextView
         android:id="@+id/tvLastUpdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="17 h"
-        android:paddingVertical="5dp"
-        android:paddingHorizontal="20dp"
+        android:paddingVertical="0dp"
+        android:paddingHorizontal="15dp"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@id/ivStar"
-        app:layout_constraintBottom_toBottomOf="@id/ivStar"
+        app:layout_constraintTop_toBottomOf="@id/tvLastUpdateText"
         app:layout_constraintEnd_toEndOf="parent"
         />
 

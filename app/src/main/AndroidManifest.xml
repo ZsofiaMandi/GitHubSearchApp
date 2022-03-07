@@ -14,7 +14,10 @@
         android:theme="@style/Theme.GitHubRepoSearchApp">
         <activity
             android:name=".activities.DetailedRepositoryActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomNoActionBarTheme"
+            />
         <activity
             android:name=".activities.MainActivity"
             android:exported="true"

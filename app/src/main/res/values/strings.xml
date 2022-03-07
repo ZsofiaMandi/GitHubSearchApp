@@ -1,7 +1,14 @@
 <resources>
     <string name="app_name">GitHubRepoSearchApp</string>
-    <string name="repo_search_edit_text_hint">Repository Name</string>
+    <string name="repo_search_edit_text_hint">Repository-search key words</string>
     <string name="ib_search_description">Start search button</string>
-    <string name="double_dot_between_star_and_number">:</string>
+    <string name="double_dot">:</string>
     <string name="iv_star_description">Star</string>
+    <string name="iv_fork_description">Fork</string>
+    <string name="github_profile_link_text"><u>Go to GitHub Profile</u></string>
+    <string name="github_repo_link_text"><u>Go to GitHub Repository</u></string>
+    <string name="owner_text">Owner</string>
+    <string name="repository_text">Repository</string>
+    <string name="creating_date_text">Creating date:</string>
+    <string name="last_update_text">Last update:</string>
 </resources>

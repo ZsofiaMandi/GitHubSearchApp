@@ -12,7 +12,236 @@
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/blue_3"
         android:theme="@style/ToolBarTheme"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivAvatar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="6dp"
+        android:padding="3dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBarDetailedRepository"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+        tools:srcCompat="@drawable/banana"
+        app:strokeColor="@color/blue_4"
+        app:strokeWidth="2dp" />
+
+    <TextView
+        android:id="@+id/ownerNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingHorizontal="10dp"
+        android:text="@string/owner_text"
+        android:textColor="@color/blue_4"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBarDetailedRepository" />
+
+    <TextView
+        android:id="@+id/ownerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:paddingHorizontal="10dp"
+        tools:text="daniel-e"
+        android:textColor="@color/blue_4"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/ivAvatar"
+
+        app:layout_constraintTop_toTopOf="@id/ivAvatar" />
+
+    <TextView
+        android:id="@+id/tvOwnerGitHubLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:text="@string/github_profile_link_text"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@id/ivAvatar"
+        app:layout_constraintTop_toBottomOf="@id/ownerName" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/blue_1"
+        android:paddingVertical="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivAvatar">
+
+        <TextView
+            android:id="@+id/tvRepoName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="5dp"
+            tools:text="tetros"
+            android:textColor="@color/blue_4"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvRepoDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="2dp"
+            tools:text="Tetris that fits into the boot sector."
+            android:textColor="@color/blue_5"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/tvRepoName" />
+
+        <TextView
+            android:id="@+id/tvRepoGitHubLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="5dp"
+            android:text="@string/github_repo_link_text"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/tvRepoDescription" />
+
+        <ImageView
+            android:id="@+id/ivStar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/iv_star_description"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="2dp"
+            android:paddingStart="12dp"
+            android:src="@drawable/ic_star_border_blue_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvLasUpdateText" />
+
+        <TextView
+            android:id="@+id/doubleDotStar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/double_dot"
+            android:textColor="@color/blue_5"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/ivStar"
+            app:layout_constraintStart_toEndOf="@id/ivStar"
+            app:layout_constraintTop_toTopOf="@id/ivStar" />
+
+        <TextView
+            android:id="@+id/tvStars"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="5dp"
+            android:textColor="@color/blue_5"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/ivStar"
+            app:layout_constraintStart_toEndOf="@id/doubleDotStar"
+            app:layout_constraintTop_toTopOf="@id/ivStar"
+            tools:text="23" />
+
+        <ImageView
+            android:id="@+id/ivFork"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="36dp"
+            android:contentDescription="@string/iv_fork_description"
+            android:src="@drawable/ic_fork_blue"
+            app:layout_constraintBottom_toBottomOf="@id/ivStar"
+            app:layout_constraintStart_toEndOf="@id/tvStars" />
+
+        <TextView
+            android:id="@+id/doubleDotFork"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/double_dot"
+            android:textColor="@color/blue_5"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/doubleDotStar"
+            app:layout_constraintStart_toEndOf="@id/ivFork"
+            app:layout_constraintTop_toTopOf="@id/doubleDotStar" />
+
+        <TextView
+            android:id="@+id/tvForks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="5dp"
+            android:textColor="@color/blue_5"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="15"
+            app:layout_constraintBottom_toBottomOf="@id/tvStars"
+            app:layout_constraintStart_toEndOf="@id/doubleDotFork"
+            app:layout_constraintTop_toTopOf="@id/tvStars" />
+
+        <TextView
+            android:id="@+id/tvCreatingDateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="2dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="2dp"
+            android:text="@string/creating_date_text"
+            android:textColor="@color/blue_4"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvRepoGitHubLink" />
+
+        <TextView
+            android:id="@+id/tvLasUpdateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="2dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="2dp"
+            android:text="@string/last_update_text"
+            android:textColor="@color/blue_4"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvCreatingDateText" />
+
+        <TextView
+            android:id="@+id/tvCreatingDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="2dp"
+            tools:text="2020.12.03."
+            android:textColor="@color/blue_4"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvCreatingDateText"
+            app:layout_constraintStart_toEndOf="@id/tvCreatingDateText"
+            app:layout_constraintTop_toTopOf="@id/tvCreatingDateText" />
+
+        <TextView
+            android:id="@+id/tvLastUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="2dp"
+            tools:text="2022.03.14."
+            android:textColor="@color/blue_4"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvLasUpdateText"
+            app:layout_constraintStart_toStartOf="@id/tvCreatingDate"
+            app:layout_constraintTop_toTopOf="@id/tvLasUpdateText" />
+
+        <TextView
+            android:id="@+id/tvRepositoryText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/repository_text"
+            android:paddingHorizontal="5dp"
+            android:textColor="@color/blue_4"
+            android:textSize="11sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

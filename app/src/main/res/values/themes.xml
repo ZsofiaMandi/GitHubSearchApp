@@ -34,4 +34,9 @@
         <item name="colorControlHighlight">@color/blue_2</item>
     </style>
 
+    <style name="ShapeAppearanceOverlay.App.CornerSize50Percent" parent="">
+        <item name="cornerSize">50%</item>
+        <item name="android:color">@color/white</item>
+    </style>
+
 </resources>
