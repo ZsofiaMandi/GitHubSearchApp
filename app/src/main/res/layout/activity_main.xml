@@ -37,6 +37,7 @@
             >
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etSearchField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/repo_search_edit_text_hint"
@@ -81,6 +82,7 @@
         android:textSize="20sp"
         android:gravity="center"
         android:visibility="visible"
+        tools:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@id/toolBarMain"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -40,9 +41,16 @@ class MainActivity : AppCompatActivity() {
 
         // Starting search for API response and set RV after getting the repos
         binding?.ibSearch?.setOnClickListener {
-            lifecycleScope.launch() {
-                val repositories = getRepositories()
-                setupReposRecyclerView(repositories)
+            if (!binding?.etSearchField?.text.isNullOrEmpty()) {
+                val repoSearchParameters = binding?.etSearchField!!.text.toString()
+                lifecycleScope.launch() {
+                    val repositories = getRepositories(repoSearchParameters)
+                    setupReposRecyclerView(repositories)
+                }
+            }else{
+                Toast.makeText(this,
+                    "Text field cannot be empty, please enter your search parameters!",
+                    Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -55,19 +63,22 @@ class MainActivity : AppCompatActivity() {
         if (binding != null) {
             binding = null
         }
-
+        // Setting back httpClient to null when the Activity is destroyed
         if (httpClient != null){
             httpClient = null
         }
     }
 
     private fun setupReposRecyclerView(repositoryList: ArrayList<RepositoryModel>){
+        // Set Repository list visible and "No results yet.." text to Gone
         binding?.rvRepos?.visibility = View.VISIBLE
         binding?.tvBeforeSearch?.visibility = View.GONE
 
+        // Creating Adapter for the Repositories
         val reposAdapter = RepositoryAdapter(repositoryList)
         binding?.rvRepos?.adapter = reposAdapter
 
+        // Start DetailedRepositoryActivity when an item was clicked
         reposAdapter.setOnClickListener(object : RepositoryAdapter.OnClickListener{
             override fun onClick(position: Int, model: RepositoryModel){
                 val intent = Intent(this@MainActivity, DetailedRepositoryActivity::class.java)
@@ -77,14 +88,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private suspend fun getRepositories() : ArrayList<RepositoryModel> {
+    private suspend fun getRepositories(query_details: String) : ArrayList<RepositoryModel> {
         val repositoryModelList : ArrayList<RepositoryModel> = ArrayList()
         val res =
             httpClient?.get<JsonObject>("https://api.github.com/search/repositories") {
-                parameter("q", "tetris+language:assembly&sort=stars&order=desc")
+                parameter("q", "$query_details")
             }
         val items = res?.get("items")?.jsonArray ?: error("Unexpected input for items")
 
+        // Taking out the required information from the JsonObject
         for(i in 0 until items.size){
             val id = i
             var name = items[i].jsonObject["name"]?.toString()
@@ -120,11 +132,13 @@ class MainActivity : AppCompatActivity() {
             ownerGitHubLink = ownerGitHubLink.substring(1, ownerGitHubLink.length - 1)
 
 
+            // Creating a repository instance from Repository Model
             val repository = RepositoryModel(
                 id, name, description, gitHubLink, stars, forks, lastUpdate,
                 createDate, ownerName, ownerAvatar, ownerGitHubLink
             )
 
+            // Adding the repository to the list of repositories
             repositoryModelList.add(repository)
 
         }
