@@ -82,6 +82,7 @@ class MainActivity : AppCompatActivity() {
         reposAdapter.setOnClickListener(object : RepositoryAdapter.OnClickListener{
             override fun onClick(position: Int, model: RepositoryModel){
                 val intent = Intent(this@MainActivity, DetailedRepositoryActivity::class.java)
+                intent.putExtra(EXTRA_REPOSITORY_DETAILS, model)
                 startActivity(intent)
             }
         })
@@ -145,5 +146,9 @@ class MainActivity : AppCompatActivity() {
 
         return repositoryModelList
 
+    }
+
+    companion object{
+        var EXTRA_REPOSITORY_DETAILS = "extra_repository_details"
     }
 }
