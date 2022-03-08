@@ -2,6 +2,7 @@ package zsofi.applications.githubreposearchapp.activities
 
 import android.app.Dialog
 import android.content.Intent
+import android.net.Uri.encode
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -97,11 +98,15 @@ class MainActivity : AppCompatActivity() {
     private suspend fun getRepositories(query_details: String) : ArrayList<RepositoryModel> {
         val repositoryModelList : ArrayList<RepositoryModel> = ArrayList()
 
+        val encodedText = encode(query_details)
+
         try {
             val res =
-                httpClient?.get<JsonObject>("https://api.github.com/search/repositories") {
-                    parameter("q", "$query_details")
+                httpClient?.get<JsonObject>(
+                    "https://api.github.com/search/repositories?q=$encodedText") {
                 }
+
+            println("---------RESULT--------$res")
             val items = res?.get("items")?.jsonArray ?: error("Unexpected input for items")
 
             // Taking out the required information from the JsonObject
