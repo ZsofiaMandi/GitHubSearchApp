@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
     private var httpClient: HttpClient? = null
-    var customProgressDialog: Dialog? = null
+    private var customProgressDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +51,9 @@ class MainActivity : AppCompatActivity() {
                 showProgressDialog()
                 lifecycleScope.launch() {
                     val repositories = getRepositories(repoSearchParameters)
-                    setupReposRecyclerView(repositories)
+                    if (repositories.isNotEmpty()){
+                        setupReposRecyclerView(repositories)
+                    }
                 }
             }else{
                 Toast.makeText(this,
@@ -105,71 +107,74 @@ class MainActivity : AppCompatActivity() {
                 httpClient?.get<JsonObject>(
                     "https://api.github.com/search/repositories?q=$encodedText") {
                 }
+            println("-----------RESULT------------ $res")
 
-            println("---------RESULT--------$res")
-            val items = res?.get("items")?.jsonArray ?: error("Unexpected input for items")
+            if (res?.get("total_count").toString().toInt() > 0){
+                val items = res?.get("items")?.jsonArray ?: error("Unexpected input for items")
 
-            // Taking out the required information from the JsonObject
-            for (i in 0 until items.size) {
-                val id = i
-                var name = items[i].jsonObject["name"]?.toString()
-                    ?: error("Unexpected format in an 'item")
-                var description = items[i].jsonObject["description"]?.toString()
-                    ?: error("Unexpected format in an 'item")
-                var gitHubLink = items[i].jsonObject["html_url"]?.toString()
-                    ?: error("Unexpected format in an 'item")
-                val stars = items[i].jsonObject["stargazers_count"]?.toString()
-                    ?: error("Unexpected format in an 'item")
-                val forks = items[i].jsonObject["forks_count"]?.toString()
-                    ?: error("Unexpected format in an 'item")
-                var lastUpdate = items[i].jsonObject["pushed_at"]?.toString()
-                    ?: error("Unexpected format in an 'item")
-                var createDate = items[i].jsonObject["created_at"]?.toString()
-                    ?: error("Unexpected format in an 'item")
-                var ownerName = items[i].jsonObject["owner"]?.jsonObject?.get("login")?.toString()
-                    ?: error("Unexpected format in an 'item")
-                var ownerAvatar =
-                    items[i].jsonObject["owner"]?.jsonObject?.get("avatar_url")?.toString()
+                // Taking out the required information from the JsonObject
+                for (i in 0 until items.size) {
+                    val id = i
+                    var name = items[i].jsonObject["name"]?.toString()
                         ?: error("Unexpected format in an 'item")
-                var ownerGitHubLink =
-                    items[i].jsonObject["owner"]?.jsonObject?.get("html_url")?.toString()
+                    var description = items[i].jsonObject["description"]?.toString()
                         ?: error("Unexpected format in an 'item")
+                    var gitHubLink = items[i].jsonObject["html_url"]?.toString()
+                        ?: error("Unexpected format in an 'item")
+                    val stars = items[i].jsonObject["stargazers_count"]?.toString()
+                        ?: error("Unexpected format in an 'item")
+                    val forks = items[i].jsonObject["forks_count"]?.toString()
+                        ?: error("Unexpected format in an 'item")
+                    var lastUpdate = items[i].jsonObject["pushed_at"]?.toString()
+                        ?: error("Unexpected format in an 'item")
+                    var createDate = items[i].jsonObject["created_at"]?.toString()
+                        ?: error("Unexpected format in an 'item")
+                    var ownerName = items[i].jsonObject["owner"]?.jsonObject?.get("login")?.toString()
+                        ?: error("Unexpected format in an 'item")
+                    var ownerAvatar =
+                        items[i].jsonObject["owner"]?.jsonObject?.get("avatar_url")?.toString()
+                            ?: error("Unexpected format in an 'item")
+                    var ownerGitHubLink =
+                        items[i].jsonObject["owner"]?.jsonObject?.get("html_url")?.toString()
+                            ?: error("Unexpected format in an 'item")
 
 
-                // Creating substrings, cutting off the "" marks, converting values to the right look
-                name = name.substring(1, name.length - 1)
-                description = description.substring(1, description.length - 1)
-                gitHubLink = gitHubLink.substring(1, gitHubLink.length - 1)
-                lastUpdate = lastUpdate.substring(1, 11)
-                createDate = createDate.substring(1, 11)
-                ownerName = ownerName.substring(1, ownerName.length - 1)
-                ownerAvatar = ownerAvatar.substring(1, ownerAvatar.length - 1)
-                ownerGitHubLink = ownerGitHubLink.substring(1, ownerGitHubLink.length - 1)
+                    // Creating substrings, cutting off the "" marks, converting values to the right look
+                    name = name.substring(1, name.length - 1)
+                    description = description.substring(1, description.length - 1)
+                    gitHubLink = gitHubLink.substring(1, gitHubLink.length - 1)
+                    lastUpdate = lastUpdate.substring(1, 11)
+                    createDate = createDate.substring(1, 11)
+                    ownerName = ownerName.substring(1, ownerName.length - 1)
+                    ownerAvatar = ownerAvatar.substring(1, ownerAvatar.length - 1)
+                    ownerGitHubLink = ownerGitHubLink.substring(1, ownerGitHubLink.length - 1)
 
 
-                // Creating a repository instance from Repository Model
-                val repository = RepositoryModel(
-                    id, name, description, gitHubLink, stars, forks, lastUpdate,
-                    createDate, ownerName, ownerAvatar, ownerGitHubLink
-                )
+                    // Creating a repository instance from Repository Model
+                    val repository = RepositoryModel(
+                        id, name, description, gitHubLink, stars, forks, lastUpdate,
+                        createDate, ownerName, ownerAvatar, ownerGitHubLink
+                    )
 
-                // Adding the repository to the list of repositories
-                repositoryModelList.add(repository)
-
-                runOnUiThread {
-                    cancelProgressDialog()
+                    // Adding the repository to the list of repositories
+                    repositoryModelList.add(repository)
                 }
+
+            }else{
+                showAlertDialog("No Result", "No results are matching your search criteria.")
+            }
+
+            runOnUiThread {
+                cancelProgressDialog()
             }
 
         }catch (e: Exception){
             e.printStackTrace()
             cancelProgressDialog()
-            showAlertDialog()
+            showAlertDialog("Failed", "Sorry! Something went wrong.")
 
         }
-
         return repositoryModelList
-
     }
 
     // Show progress dialog while loading repositories
@@ -188,16 +193,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showAlertDialog(){
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Alert")
-        builder.setMessage("Sorry! Something went wrong.")
+    private fun showAlertDialog(title: String, message: String){
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogTheme)
+        builder.setTitle(title)
+        builder.setMessage(message)
         builder.setIcon(android.R.drawable.ic_dialog_alert)
-
-        builder.setPositiveButton("OK"){dialogInterface, which ->
+        builder.setPositiveButton("OK"){dialogInterface, _ ->
             dialogInterface.dismiss()
         }
-
+        builder.show()
     }
 
     companion object{
