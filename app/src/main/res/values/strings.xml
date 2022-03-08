@@ -11,4 +11,5 @@
     <string name="repository_text">Repository</string>
     <string name="creating_date_text">Creating date:</string>
     <string name="last_update_text">Last update:</string>
+    <string name="please_wait">Please Wait..</string>
 </resources>
