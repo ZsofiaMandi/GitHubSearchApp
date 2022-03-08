@@ -1,17 +1,15 @@
 package zsofi.applications.githubreposearchapp.activities
 
-import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.lifecycleScope
+import android.text.method.LinkMovementMethod
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
-import kotlinx.coroutines.launch
 import zsofi.applications.githubreposearchapp.databinding.ActivityDetailedRepositoryBinding
 import zsofi.applications.githubreposearchapp.models.RepositoryModel
-import android.graphics.BitmapFactory
+import androidx.core.text.HtmlCompat.FROM_HTML_MODE_COMPACT
+import androidx.core.text.HtmlCompat.fromHtml
 import com.squareup.picasso.Picasso
-import java.net.URL
 
 
 class DetailedRepositoryActivity : AppCompatActivity() {
@@ -56,9 +54,21 @@ class DetailedRepositoryActivity : AppCompatActivity() {
             binding?.tvStars?.text = repositoryDetailModel.stars
             binding?.tvForks?.text = repositoryDetailModel.forks
 
-            // Set image from URL using Picasso
+            // Setting image from URL using Picasso
             val imageUrl = repositoryDetailModel.ownerAvatar.toString()
-            Picasso.get().load(imageUrl).into(binding?.ivAvatar);
+            Picasso.get().load(imageUrl).into(binding?.ivAvatar)
+
+            // Setting Hyperlinks for GitHub links
+            // Link to GitHub Profile
+            val profileLinkText = "<a href='${repositoryDetailModel.ownerGitHubLink}'>Go to GitHub Profile</a>"
+            binding?.tvOwnerGitHubLink?.isClickable = true
+            binding?.tvOwnerGitHubLink?.movementMethod = LinkMovementMethod.getInstance()
+            binding?.tvOwnerGitHubLink?.text = fromHtml(profileLinkText, FROM_HTML_MODE_COMPACT)
+            // Link to GitHub Repository
+            val repoLinkText = "<a href='${repositoryDetailModel.gitHubLink}'>Go to GitHub Repository</a>"
+            binding?.tvRepoGitHubLink?.isClickable = true
+            binding?.tvRepoGitHubLink?.movementMethod = LinkMovementMethod.getInstance()
+            binding?.tvRepoGitHubLink?.text = fromHtml(repoLinkText, FROM_HTML_MODE_COMPACT)
 
         }
 
