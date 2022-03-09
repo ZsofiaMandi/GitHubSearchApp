@@ -1,6 +1,7 @@
 package zsofi.applications.githubreposearchapp.activities
 
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri.encode
 import androidx.appcompat.app.AppCompatActivity
@@ -22,9 +23,14 @@ import zsofi.applications.githubreposearchapp.R
 import zsofi.applications.githubreposearchapp.adapters.RepositoryAdapter
 import zsofi.applications.githubreposearchapp.databinding.ActivityMainBinding
 import zsofi.applications.githubreposearchapp.models.RepositoryModel
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
+
 
 class MainActivity : AppCompatActivity() {
 
+    // Variables
     private var binding: ActivityMainBinding? = null
     private var httpClient: HttpClient? = null
     private var customProgressDialog: Dialog? = null
@@ -32,9 +38,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
+        // Creating HttpClient for API call
         httpClient = HttpClient(CIO) {
             install(JsonFeature)
         }
@@ -45,21 +53,43 @@ class MainActivity : AppCompatActivity() {
             supportActionBar?.title = "Search for GitHub Repositories"
         }
 
-        // Starting search for API response and set RV after getting the repos
+        // Starting to perform GitHub search when there is a click on the Search Button
         binding?.ibSearch?.setOnClickListener {
+            // Checking if input text field is empty or not
             if (!binding?.etSearchField?.text.isNullOrEmpty()) {
-                val repoSearchParameters = binding?.etSearchField!!.text.toString()
-                showProgressDialog()
-                lifecycleScope.launch() {
-                    val repositories = getRepositories(repoSearchParameters)
-                    if (repositories.isNotEmpty()){
-                        setupReposRecyclerView(repositories)
+
+                // Search repositories only if the network is available
+                if (isNetworkAvailable(this)){
+                    // Setting search parameters based on the input text field text
+                    val repoSearchParameters = binding?.etSearchField!!.text.toString()
+
+                    // Show progressDialog during the coroutine is loading the repositories
+                    showProgressDialog()
+
+                    // Starting coroutine for API call
+                    lifecycleScope.launch {
+                        // Starting search for API response
+                        val repositories = getRepositories(repoSearchParameters)
+
+                        // If the repository list isn't empty after the API call,
+                        // show it's elements in the RecyclerView
+                        if (repositories.isNotEmpty()){
+                            setupReposRecyclerView(repositories)
+                        }
                     }
+                }else{
+                    // Show a Toast if there is no Internet connection
+                    Toast.makeText(this,
+                        "The repository search needs Internet connection, " +
+                                "please connect to the Internet !",
+                        Toast.LENGTH_LONG).show()
                 }
+
             }else{
+                // Show a Toast if the input text field is empty
                 Toast.makeText(this,
                     "Text field cannot be empty, please enter your search parameters!",
-                    Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -78,6 +108,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Setting up RecyclerView to show the Repository List on the MainActivity
     private fun setupReposRecyclerView(repositoryList: ArrayList<RepositoryModel>){
         // Set Repository list visible and "No results yet.." text to Gone
         binding?.rvRepos?.visibility = View.VISIBLE
@@ -98,6 +129,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // Function to get an ArrayList from the RepositoryList from GitHub based on the search parameters
     private suspend fun getRepositories(query_details: String) : ArrayList<RepositoryModel> {
         val repositoryModelList : ArrayList<RepositoryModel> = ArrayList()
 
@@ -108,14 +140,12 @@ class MainActivity : AppCompatActivity() {
                 httpClient?.get<JsonObject>(
                     "https://api.github.com/search/repositories?q=$encodedText") {
                 }
-            println("-----------RESULT------------ $res")
 
             if (res?.get("total_count").toString().toInt() > 0){
                 val items = res?.get("items")?.jsonArray ?: error("Unexpected input for items")
 
                 // Taking out the required information from the JsonObject
                 for (i in 0 until items.size) {
-                    val id = i
                     var name = items[i].jsonObject["name"]?.toString()
                         ?: error("Unexpected format in an 'item")
                     var description = items[i].jsonObject["description"]?.toString()
@@ -144,16 +174,20 @@ class MainActivity : AppCompatActivity() {
                     name = name.substring(1, name.length - 1)
                     description = description.substring(1, description.length - 1)
                     gitHubLink = gitHubLink.substring(1, gitHubLink.length - 1)
-                    lastUpdate = lastUpdate.substring(1, 11)
-                    createDate = createDate.substring(1, 11)
                     ownerName = ownerName.substring(1, ownerName.length - 1)
                     ownerAvatar = ownerAvatar.substring(1, ownerAvatar.length - 1)
                     ownerGitHubLink = ownerGitHubLink.substring(1, ownerGitHubLink.length - 1)
+                    // Modifying dates to be in the right format(yyyy.MM.DD.)
+                    lastUpdate = lastUpdate.substring(1, 5) + "." + lastUpdate.substring(6, 8)+
+                            "." + lastUpdate.substring(9, 11) + "."
+                    createDate = createDate.substring(1, 5) + "." + createDate.substring(6, 8)+
+                            "." + createDate.substring(9, 11) + "."
+
 
 
                     // Creating a repository instance from Repository Model
                     val repository = RepositoryModel(
-                        id, name, description, gitHubLink, stars, forks, lastUpdate,
+                        name, description, gitHubLink, stars, forks, lastUpdate,
                         createDate, ownerName, ownerAvatar, ownerGitHubLink
                     )
 
@@ -179,7 +213,7 @@ class MainActivity : AppCompatActivity() {
         return repositoryModelList
     }
 
-    // Show progress dialog while loading repositories
+    // Function to show custom Progress Dialog
     private fun showProgressDialog(){
         customProgressDialog = Dialog(this@MainActivity)
         customProgressDialog?.setContentView(R.layout.dialog_custom_progress)
@@ -187,7 +221,7 @@ class MainActivity : AppCompatActivity() {
         customProgressDialog?.show()
     }
 
-    // Cancel the progress dialog
+    // Function to cancel the custom Progress Dialog
     private fun cancelProgressDialog(){
         if(customProgressDialog != null){
             customProgressDialog?.dismiss()
@@ -195,6 +229,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Show Alert Dialog with custom title and message
     private fun showAlertDialog(title: String, message: String){
         val builder = AlertDialog.Builder(this, R.style.AlertDialogTheme)
         builder.setTitle(title)
@@ -206,7 +241,31 @@ class MainActivity : AppCompatActivity() {
         builder.show()
     }
 
+    // Check if the Network is available or not based on SDK version
+    private fun isNetworkAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val nw = connectivityManager.activeNetwork ?: return false
+            val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
+            return when {
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                //for other device how are able to connect with Ethernet
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                //for check internet over Bluetooth
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
+                else -> false
+            }
+        } else {
+            val nwInfo = connectivityManager.activeNetworkInfo ?: return false
+            return nwInfo.isConnected
+        }
+    }
+
+    // Using companion object
     companion object{
+        // Creating variable to use it to put extra information when
+        // starting intent to go from the MainActivity to the DetailedActivity
         var EXTRA_REPOSITORY_DETAILS = "extra_repository_details"
     }
 

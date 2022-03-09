@@ -10,10 +10,11 @@
         <item name="colorSecondaryVariant">@color/blue_2</item>
         <item name="colorOnSecondary">@color/blue_2</item>
         <!-- Status bar color. -->
-
         <!-- Added colors. -->
         <!-- Customize your theme here. -->
     </style>
+
+    <!-- Custom Themes -->
 
     <style name="CustomNoActionBarTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:statusBarColor">@color/blue_4</item>
@@ -40,12 +41,7 @@
     </style>
 
     <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
-        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
-    </style>
-
-    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/blue_4</item>
     </style>
 
     <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">

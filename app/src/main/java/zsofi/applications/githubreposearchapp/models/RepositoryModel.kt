@@ -4,7 +4,6 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class RepositoryModel(
-    val id: Int,
     val name: String?,
     val description: String?,
     val gitHubLink: String?,
@@ -18,7 +17,6 @@ data class RepositoryModel(
 ): Parcelable // To allow the model instance to pass with an intent
 {
     constructor(parcel: Parcel) : this(
-        parcel.readInt(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -33,7 +31,6 @@ data class RepositoryModel(
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
         parcel.writeString(name)
         parcel.writeString(description)
         parcel.writeString(gitHubLink)
