@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
+import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.launch
@@ -161,18 +162,19 @@ class MainActivity : AppCompatActivity() {
                 }
 
             }else{
-                showAlertDialog("No Result", "No results are matching your search criteria.")
+                runOnUiThread {
+                    showAlertDialog("No Result", "No results are matching your search criteria.")
+                }
             }
-
             runOnUiThread {
                 cancelProgressDialog()
             }
-
         }catch (e: Exception){
             e.printStackTrace()
-            cancelProgressDialog()
-            showAlertDialog("Failed", "Sorry! Something went wrong.")
-
+            runOnUiThread{
+                cancelProgressDialog()
+                showAlertDialog("Could not perform this search", "Sorry! The search couldn't be performed.")
+            }
         }
         return repositoryModelList
     }
@@ -207,4 +209,6 @@ class MainActivity : AppCompatActivity() {
     companion object{
         var EXTRA_REPOSITORY_DETAILS = "extra_repository_details"
     }
+
+
 }
