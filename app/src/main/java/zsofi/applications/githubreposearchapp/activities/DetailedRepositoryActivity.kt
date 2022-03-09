@@ -3,8 +3,6 @@ package zsofi.applications.githubreposearchapp.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
 import zsofi.applications.githubreposearchapp.databinding.ActivityDetailedRepositoryBinding
 import zsofi.applications.githubreposearchapp.models.RepositoryModel
 import androidx.core.text.HtmlCompat.FROM_HTML_MODE_COMPACT
@@ -15,20 +13,17 @@ import com.squareup.picasso.Picasso
 class DetailedRepositoryActivity : AppCompatActivity() {
 
     private var binding: ActivityDetailedRepositoryBinding? = null
-    private var httpClient: HttpClient? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         var repositoryDetailModel : RepositoryModel? = null
-        httpClient = HttpClient(CIO) {
-        }
 
         binding = ActivityDetailedRepositoryBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-
+        // Getting the information of the clicked repository
         if (intent.hasExtra(MainActivity.EXTRA_REPOSITORY_DETAILS)){
             repositoryDetailModel = intent.getParcelableExtra(
                 MainActivity.EXTRA_REPOSITORY_DETAILS) as RepositoryModel?
