@@ -35,7 +35,7 @@
         android:paddingHorizontal="10dp"
         android:text="@string/owner_text"
         android:textColor="@color/blue_4"
-        android:textSize="11sp"
+        android:textSize="@dimen/owner_and_repository_card_title_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolBarDetailedRepository" />
 
@@ -47,7 +47,7 @@
         android:paddingHorizontal="10dp"
         tools:text="daniel-e"
         android:textColor="@color/blue_4"
-        android:textSize="20sp"
+        android:textSize="@dimen/repo_name_in_detailed_view_text_size"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/ivAvatar"
 
@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="10dp"
         tools:text="@string/github_profile_link_text"
-        android:textSize="16sp"
+        android:textSize="@dimen/hyper_links_text_size"
         app:layout_constraintStart_toEndOf="@id/ivAvatar"
         app:layout_constraintTop_toBottomOf="@id/tvOwnerName" />
 
@@ -105,7 +105,7 @@
             android:paddingHorizontal="12dp"
             android:paddingBottom="5dp"
             android:text="@string/github_repo_link_text"
-            android:textSize="16sp"
+            android:textSize="@dimen/hyper_links_text_size"
             app:layout_constraintTop_toBottomOf="@id/tvRepoDescription" />
 
         <ImageView
@@ -126,7 +126,7 @@
             android:layout_height="wrap_content"
             android:text="@string/double_dot"
             android:textColor="@color/blue_5"
-            android:textSize="18sp"
+            android:textSize="@dimen/double_dot_text_size"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/ivStar"
             app:layout_constraintStart_toEndOf="@id/ivStar"
@@ -138,7 +138,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="5dp"
             android:textColor="@color/blue_5"
-            android:textSize="18sp"
+            android:textSize="@dimen/stars_and_forks_text_size"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/ivStar"
             app:layout_constraintStart_toEndOf="@id/doubleDotStar"
@@ -161,7 +161,7 @@
             android:layout_height="wrap_content"
             android:text="@string/double_dot"
             android:textColor="@color/blue_5"
-            android:textSize="18sp"
+            android:textSize="@dimen/double_dot_text_size"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/doubleDotStar"
             app:layout_constraintStart_toEndOf="@id/ivFork"
@@ -173,7 +173,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="5dp"
             android:textColor="@color/blue_5"
-            android:textSize="18sp"
+            android:textSize="@dimen/stars_and_forks_text_size"
             android:textStyle="bold"
             tools:text="15"
             app:layout_constraintBottom_toBottomOf="@id/tvStars"
@@ -189,7 +189,7 @@
             android:paddingEnd="2dp"
             android:text="@string/creating_date_text"
             android:textColor="@color/blue_4"
-            android:textSize="16sp"
+            android:textSize="@dimen/detailed_view_date_text_size"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvRepoGitHubLink" />
 
@@ -202,7 +202,7 @@
             android:paddingEnd="2dp"
             android:text="@string/last_update_text"
             android:textColor="@color/blue_4"
-            android:textSize="16sp"
+            android:textSize="@dimen/detailed_view_date_text_size"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvCreatingDateText" />
 
@@ -213,7 +213,7 @@
             android:paddingHorizontal="2dp"
             tools:text="2020.12.03."
             android:textColor="@color/blue_4"
-            android:textSize="16sp"
+            android:textSize="@dimen/detailed_view_date_text_size"
             app:layout_constraintBottom_toBottomOf="@id/tvCreatingDateText"
             app:layout_constraintStart_toEndOf="@id/tvCreatingDateText"
             app:layout_constraintTop_toTopOf="@id/tvCreatingDateText" />
@@ -225,7 +225,7 @@
             android:paddingHorizontal="2dp"
             tools:text="2022.03.14."
             android:textColor="@color/blue_4"
-            android:textSize="16sp"
+            android:textSize="@dimen/detailed_view_date_text_size"
             app:layout_constraintBottom_toBottomOf="@id/tvLasUpdateText"
             app:layout_constraintStart_toStartOf="@id/tvCreatingDate"
             app:layout_constraintTop_toTopOf="@id/tvLasUpdateText" />
@@ -237,7 +237,7 @@
             android:text="@string/repository_text"
             android:paddingHorizontal="5dp"
             android:textColor="@color/blue_4"
-            android:textSize="11sp"
+            android:textSize="@dimen/owner_and_repository_card_title_text_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

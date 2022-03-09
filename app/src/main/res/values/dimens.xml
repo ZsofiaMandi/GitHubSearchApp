@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="repo_name_in_list_text_size">16sp</dimen>
+    <dimen name="repo_description_in_list_text_size">15sp</dimen>
+    <dimen name="stars_and_forks_text_size">18sp</dimen>
+    <dimen name="lastUpdateText_text_size">14sp</dimen>
+    <dimen name="lastUpdate_text_size">15sp</dimen>
+
+    <dimen name="repo_name_in_detailed_view_text_size">20sp</dimen>
+    <dimen name="owner_and_repository_card_title_text_size">11sp</dimen>
+    <dimen name="hyper_links_text_size">16sp</dimen>
+    <dimen name="detailed_view_date_text_size">16sp</dimen>
+    <dimen name="double_dot_text_size">18sp</dimen>
+
+</resources>

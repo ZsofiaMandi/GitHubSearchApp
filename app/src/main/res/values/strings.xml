@@ -12,4 +12,7 @@
     <string name="creating_date_text">Creating date:</string>
     <string name="last_update_text">Last update:</string>
     <string name="please_wait">Please Wait..</string>
+    <string name="before_search_text">No results yet. Please search to see the repositories!</string>
+    <string name="last_update_in_list_text">Last update</string>
+    <string name="application_name">GitHub Search</string>
 </resources>

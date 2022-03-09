@@ -86,15 +86,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="No results yet. Please search to see the repositories!"
-            android:textSize="20sp"
             android:gravity="center"
-            android:visibility="visible"
+            android:text="@string/before_search_text"
+            android:textSize="20sp"
             tools:visibility="invisible"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
