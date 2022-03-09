@@ -1,14 +1,11 @@
 package zsofi.applications.githubreposearchapp.activities
 
-import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.net.Uri.encode
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -19,21 +16,19 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
-import zsofi.applications.githubreposearchapp.R
 import zsofi.applications.githubreposearchapp.adapters.RepositoryAdapter
 import zsofi.applications.githubreposearchapp.databinding.ActivityMainBinding
 import zsofi.applications.githubreposearchapp.models.RepositoryModel
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
-
+import zsofi.applications.githubreposearchapp.helpers.Dialogs.Companion.cancelProgressDialog
+import zsofi.applications.githubreposearchapp.helpers.Dialogs.Companion.showAlertDialog
+import zsofi.applications.githubreposearchapp.helpers.Dialogs.Companion.showProgressDialog
+import zsofi.applications.githubreposearchapp.helpers.NetworkCheck.Companion.isNetworkAvailable
 
 class MainActivity : AppCompatActivity() {
 
     // Variables
     private var binding: ActivityMainBinding? = null
     private var httpClient: HttpClient? = null
-    private var customProgressDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                     val repoSearchParameters = binding?.etSearchField!!.text.toString()
 
                     // Show progressDialog during the coroutine is loading the repositories
-                    showProgressDialog()
+                    showProgressDialog(this)
 
                     // Starting coroutine for API call
                     lifecycleScope.launch {
@@ -93,7 +88,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -146,28 +140,16 @@ class MainActivity : AppCompatActivity() {
 
                 // Taking out the required information from the JsonObject
                 for (i in 0 until items.size) {
-                    var name = items[i].jsonObject["name"]?.toString()
-                        ?: error("Unexpected format in an 'item")
-                    var description = items[i].jsonObject["description"]?.toString()
-                        ?: error("Unexpected format in an 'item")
-                    var gitHubLink = items[i].jsonObject["html_url"]?.toString()
-                        ?: error("Unexpected format in an 'item")
-                    val stars = items[i].jsonObject["stargazers_count"]?.toString()
-                        ?: error("Unexpected format in an 'item")
-                    val forks = items[i].jsonObject["forks_count"]?.toString()
-                        ?: error("Unexpected format in an 'item")
-                    var lastUpdate = items[i].jsonObject["pushed_at"]?.toString()
-                        ?: error("Unexpected format in an 'item")
-                    var createDate = items[i].jsonObject["created_at"]?.toString()
-                        ?: error("Unexpected format in an 'item")
-                    var ownerName = items[i].jsonObject["owner"]?.jsonObject?.get("login")?.toString()
-                        ?: error("Unexpected format in an 'item")
-                    var ownerAvatar =
-                        items[i].jsonObject["owner"]?.jsonObject?.get("avatar_url")?.toString()
-                            ?: error("Unexpected format in an 'item")
-                    var ownerGitHubLink =
-                        items[i].jsonObject["owner"]?.jsonObject?.get("html_url")?.toString()
-                            ?: error("Unexpected format in an 'item")
+                    var name = items[i].jsonObject["name"]?.toString() ?: error("Unexpected format in an 'item")
+                    var description = items[i].jsonObject["description"]?.toString() ?: error("Unexpected format in an 'item")
+                    var gitHubLink = items[i].jsonObject["html_url"]?.toString() ?: error("Unexpected format in an 'item")
+                    val stars = items[i].jsonObject["stargazers_count"]?.toString() ?: error("Unexpected format in an 'item")
+                    val forks = items[i].jsonObject["forks_count"]?.toString() ?: error("Unexpected format in an 'item")
+                    var lastUpdate = items[i].jsonObject["pushed_at"]?.toString() ?: error("Unexpected format in an 'item")
+                    var createDate = items[i].jsonObject["created_at"]?.toString() ?: error("Unexpected format in an 'item")
+                    var ownerName = items[i].jsonObject["owner"]?.jsonObject?.get("login")?.toString() ?: error("Unexpected format in an 'item")
+                    var ownerAvatar = items[i].jsonObject["owner"]?.jsonObject?.get("avatar_url")?.toString() ?: error("Unexpected format in an 'item")
+                    var ownerGitHubLink = items[i].jsonObject["owner"]?.jsonObject?.get("html_url")?.toString() ?: error("Unexpected format in an 'item")
 
 
                     // Creating substrings, cutting off the "" marks, converting values to the right look
@@ -183,8 +165,6 @@ class MainActivity : AppCompatActivity() {
                     createDate = createDate.substring(1, 5) + "." + createDate.substring(6, 8)+
                             "." + createDate.substring(9, 11) + "."
 
-
-
                     // Creating a repository instance from Repository Model
                     val repository = RepositoryModel(
                         name, description, gitHubLink, stars, forks, lastUpdate,
@@ -197,7 +177,9 @@ class MainActivity : AppCompatActivity() {
 
             }else{
                 runOnUiThread {
-                    showAlertDialog("No Result", "No results are matching your search criteria.")
+                    showAlertDialog(this,
+                        "No Result",
+                        "No results are matching your search criteria.")
                 }
             }
             runOnUiThread {
@@ -207,62 +189,14 @@ class MainActivity : AppCompatActivity() {
             e.printStackTrace()
             runOnUiThread{
                 cancelProgressDialog()
-                showAlertDialog("Could not perform this search", "Sorry! The search couldn't be performed.")
+                showAlertDialog(this,
+                    "Could not perform this search",
+                    "Sorry! The search couldn't be performed.")
             }
         }
         return repositoryModelList
     }
 
-    // Function to show custom Progress Dialog
-    private fun showProgressDialog(){
-        customProgressDialog = Dialog(this@MainActivity)
-        customProgressDialog?.setContentView(R.layout.dialog_custom_progress)
-        customProgressDialog?.setCanceledOnTouchOutside(false)
-        customProgressDialog?.show()
-    }
-
-    // Function to cancel the custom Progress Dialog
-    private fun cancelProgressDialog(){
-        if(customProgressDialog != null){
-            customProgressDialog?.dismiss()
-            customProgressDialog = null
-        }
-    }
-
-    // Show Alert Dialog with custom title and message
-    private fun showAlertDialog(title: String, message: String){
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogTheme)
-        builder.setTitle(title)
-        builder.setMessage(message)
-        builder.setIcon(android.R.drawable.ic_dialog_alert)
-        builder.setPositiveButton("OK"){dialogInterface, _ ->
-            dialogInterface.dismiss()
-        }
-        builder.show()
-    }
-
-    // Check if the Network is available or not based on SDK version
-    private fun isNetworkAvailable(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val nw = connectivityManager.activeNetwork ?: return false
-            val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
-            return when {
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                //for other device how are able to connect with Ethernet
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-                //for check internet over Bluetooth
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
-                else -> false
-            }
-        } else {
-            val nwInfo = connectivityManager.activeNetworkInfo ?: return false
-            return nwInfo.isConnected
-        }
-    }
-
-    // Using companion object
     companion object{
         // Creating variable to use it to put extra information when
         // starting intent to go from the MainActivity to the DetailedActivity

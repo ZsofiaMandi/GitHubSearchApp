@@ -20,12 +20,12 @@
         android:layout_height="80dp"
         android:layout_margin="6dp"
         android:padding="3dp"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+        app:strokeColor="@color/blue_4"
+        app:strokeWidth="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolBarDetailedRepository"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-        tools:srcCompat="@drawable/banana"
-        app:strokeColor="@color/blue_4"
-        app:strokeWidth="2dp" />
+        />
 
     <TextView
         android:id="@+id/tvOwnerNameText"
@@ -58,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingHorizontal="10dp"
-        android:text="@string/github_profile_link_text"
+        tools:text="@string/github_profile_link_text"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/ivAvatar"
         app:layout_constraintTop_toBottomOf="@id/tvOwnerName" />
@@ -81,7 +81,6 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="12dp"
             android:paddingVertical="5dp"
-            tools:text="tetros"
             android:textColor="@color/blue_4"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -243,6 +242,5 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
